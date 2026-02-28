@@ -14,6 +14,21 @@ body{
   color:white;
 }
 
+/* PANTALLA INICIO */
+#startScreen{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:black;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  font-size:1.5em;
+  cursor:pointer;
+  z-index:10;
+}
+
 /* GALAXIA */
 .galaxy{
   position:fixed;
@@ -21,7 +36,6 @@ body{
   height:100%;
   background: radial-gradient(ellipse at bottom, #0d1b2a 0%, #000 70%);
   overflow:hidden;
-  transition: background 6s;
 }
 
 .star{
@@ -86,7 +100,6 @@ body{
   transform:scale(1.08);
 }
 
-/* FOTO FINAL DORADA */
 .final img{
   box-shadow:0 0 80px rgba(255,215,0,0.8);
 }
@@ -143,170 +156,16 @@ body{
 
 <body>
 
-<div class="galaxy" id="galaxy">
-  <div class="nebula"></div>
+<div id="startScreen" onclick="startExperience()">
+Toca la pantalla para comenzar ✨
 </div>
 
-<div class="text" id="text"></div>
-
-<div class="image-container" id="imageContainer">
-  <img id="image">
-</div>
-
-<div class="small-text" id="smallText"></div>
-
-<div class="chick" id="chick">🐥</div>
-
-<audio autoplay loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/10/30/audio_6d9c8fa9c4.mp3?filename=romantic-background-126852.mp3">
-</audio>
-
-<script>
-
-/* ESTRELLAS */
-for(let i=0;i<180;i++){
-  let s=document.createElement("div");
-  s.className="star";
-  s.style.top=Math.random()*100+"%";
-  s.style.left=Math.random()*100+"%";
-  s.style.animationDuration=(Math.random()*3+2)+"s";
-  document.getElementById("galaxy").appendChild(s);
-}
-
-const text=document.getElementById("text");
-const imageContainer=document.getElementById("imageContainer");
-const image=document.getElementById("image");
-const smallText=document.getElementById("smallText");
-const chick=document.getElementById("chick");
-const galaxy=document.getElementById("galaxy");
-
-function showText(msg,t){
-  setTimeout(()=>{text.innerHTML=msg;text.style.opacity=1;},t);
-}
-function hideText(t){
-  setTimeout(()=>{text.style.opacity=0;},t);
-}
-function showImage(src,t,final=false){
-  setTimeout(()=>{
-    image.src=src;
-    imageContainer.className="image-container";
-    if(final){imageContainer.classList.add("final");createGold();}
-    imageContainer.style.opacity=1;
-    imageContainer.classList.add("zoom");
-  },t);
-}
-function hideImage(t){
-  setTimeout(()=>{
-    imageContainer.style.opacity=0;
-    imageContainer.classList.remove("zoom");
-  },t);
-}
-function createGold(){
-  for(let i=0;i<40;i++){
-    let g=document.createElement("div");
-    g.className="gold";
-    g.style.left=Math.random()*100+"%";
-    g.style.bottom="0px";
-    g.style.animationDelay=Math.random()*5+"s";
-    document.body.appendChild(g);
-  }
-}
-
-/* SECUENCIA */
-
-let time=2000;
-
-const phrases=[
-"Todo era ruido…",
-"Todo era rápido…",
-"Y yo solo quería paz.",
-"Hasta que llegaste tú.",
-"Luis Alberto.",
-"No llegaste a impresionarme…",
-"Llegaste a tranquilizarme.",
-"Contigo no tengo que correr.",
-"Contigo simplemente soy.",
-"Admiro tu forma de ser."
-];
-
-phrases.forEach(p=>{
-  showText(p,time);
-  hideText(time+5000);
-  time+=7000;
-});
-
-/* FOTOS */
-
-const photos=[
-["nota.jpg","Aquí empezaba algo que aún no entendía…"],
-["pio.jpg","Aquí ya sentía calma."],
-["pio2.jpg","Aquí ya eras importante."],
-["pio3.jpg","Aquí ya me sentía segura."],
-["pio4.jpg","Aquí ya sabía que no eras pasajero."]
-];
-
-photos.forEach(p=>{
-  showImage(p[0],time);
-  showText(p[1],time+2000);
-  hideText(time+8000);
-  hideImage(time+10000);
-  time+=12000;
-});
-
-/* FOTO FINAL */
-showImage("nosotros.jpg",time,true);
-time+=6000;
-
-showText("Y aquí entendí algo…",time);
-hideText(time+6000);
-time+=8000;
-
-showText("No eres emoción.",time);
-hideText(time+6000);
-time+=8000;
-
-showText("Eres decisión.",time);
-hideText(time+6000);
-time+=8000;
-
-showText("Eres mi prioridad.",time);
-time+=10000;
-
-/* PROMESA */
-hideImage(time+2000);
-galaxy.style.background="radial-gradient(ellipse at bottom, #000 0%, #000 90%)";
-time+=5000;
-
-["No prometo perfección.",
-"Prometo intención.",
-"Prometo quedarme.",
-"Si el mundo se vuelve ruido…",
-"Yo voy a ser tu calma… como tú lo eres para mí."
-].forEach(p=>{
-  showText(p,time);
-  hideText(time+6000);
-  time+=8000;
-});
-
-/* CIERRE */
-smallText.innerHTML="Contigo… me quedo.";
-setTimeout(()=>{smallText.style.opacity=1;},time+2000);
-
-/* POLLITO */
-setTimeout(()=>{
-  chick.style.opacity=1;
-  chick.style.left="40%";
-},time+4000);
-
-setTimeout(()=>{
-  chick.classList.add("wave");
-},time+9000);
-
-setTimeout(()=>{
-  chick.style.left="110%";
-  chick.style.opacity=0;
-},time+14000);
-
-</script>
-</body>
-</html>
+<!-- Música YouTube Invisible -->
+<div style="position:fixed; width:0; height:0; overflow:hidden;">
+  <iframe id="ytplayer"
+    src=""
+    frameborder="0"
+    allow="autoplay"
+    allowfullscreen>
+  </iframe>
+</div
