@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contigo me quedo</title>
+
+<style>
+body{
+  margin:0;
+  overflow:hidden;
+  background:black;
+  font-family:'Georgia',serif;
+  color:white;
+}
+
+/* GALAXIA */
+.galaxy{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background: radial-gradient(ellipse at bottom, #0d1b2a 0%, #000 70%);
+  overflow:hidden;
+  transition: background 6s;
+}
+
+.star{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:white;
+  border-radius:50%;
+  animation: twinkle 3s infinite alternate;
+}
+
+@keyframes twinkle{
+  from{opacity:0.2;}
+  to{opacity:1;}
+}
+
+.nebula{
+  position:absolute;
+  width:900px;
+  height:900px;
+  background: radial-gradient(circle, rgba(138,43,226,0.25), transparent 70%);
+  top:10%;
+  left:25%;
+  animation: rotate 60s linear infinite;
+}
+
+@keyframes rotate{
+  from{transform:rotate(0deg);}
+  to{transform:rotate(360deg);}
+}
+
+/* TEXTO */
+.text{
+  position:absolute;
+  width:100%;
+  top:40%;
+  text-align:center;
+  font-size:1.9em;
+  opacity:0;
+  transition:opacity 2.5s ease;
+  padding:0 30px;
+}
+
+/* IMÁGENES */
+.image-container{
+  position:absolute;
+  width:100%;
+  top:18%;
+  text-align:center;
+  opacity:0;
+  transition:opacity 3s ease, transform 10s ease;
+}
+
+.image-container img{
+  max-width:80%;
+  max-height:65vh;
+  border-radius:25px;
+  box-shadow:0 0 40px rgba(255,255,255,0.25);
+}
+
+.zoom{
+  transform:scale(1.08);
+}
+
+/* FOTO FINAL DORADA */
+.final img{
+  box-shadow:0 0 80px rgba(255,215,0,0.8);
+}
+
+/* PARTÍCULAS DORADAS */
+.gold{
+  position:absolute;
+  width:4px;
+  height:4px;
+  background:gold;
+  border-radius:50%;
+  opacity:0.8;
+  animation: floatUp 6s linear infinite;
+}
+
+@keyframes floatUp{
+  from{transform:translateY(0); opacity:1;}
+  to{transform:translateY(-200px); opacity:0;}
+}
+
+/* POLLITO */
+.chick{
+  position:absolute;
+  bottom:30px;
+  left:-120px;
+  font-size:42px;
+  opacity:0;
+  transition:left 8s linear, opacity 3s ease;
+}
+
+.wave{
+  animation: wave 1s ease 2;
+}
+
+@keyframes wave{
+  0%{transform:rotate(0deg);}
+  25%{transform:rotate(-15deg);}
+  50%{transform:rotate(15deg);}
+  75%{transform:rotate(-10deg);}
+  100%{transform:rotate(0deg);}
+}
+
+.small-text{
+  position:absolute;
+  bottom:12%;
+  width:100%;
+  text-align:center;
+  font-size:1.2em;
+  opacity:0;
+  transition:opacity 4s ease;
+}
+</style>
+</head>
+
+<body>
+
+<div class="galaxy" id="galaxy">
+  <div class="nebula"></div>
+</div>
+
+<div class="text" id="text"></div>
+
+<div class="image-container" id="imageContainer">
+  <img id="image">
+</div>
+
+<div class="small-text" id="smallText"></div>
+
+<div class="chick" id="chick">🐥</div>
+
+<audio autoplay loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/10/30/audio_6d9c8fa9c4.mp3?filename=romantic-background-126852.mp3">
+</audio>
+
+<script>
+
+/* ESTRELLAS */
+for(let i=0;i<180;i++){
+  let s=document.createElement("div");
+  s.className="star";
+  s.style.top=Math.random()*100+"%";
+  s.style.left=Math.random()*100+"%";
+  s.style.animationDuration=(Math.random()*3+2)+"s";
+  document.getElementById("galaxy").appendChild(s);
+}
+
+const text=document.getElementById("text");
+const imageContainer=document.getElementById("imageContainer");
+const image=document.getElementById("image");
+const smallText=document.getElementById("smallText");
+const chick=document.getElementById("chick");
+const galaxy=document.getElementById("galaxy");
+
+function showText(msg,t){
+  setTimeout(()=>{text.innerHTML=msg;text.style.opacity=1;},t);
+}
+function hideText(t){
+  setTimeout(()=>{text.style.opacity=0;},t);
+}
+function showImage(src,t,final=false){
+  setTimeout(()=>{
+    image.src=src;
+    imageContainer.className="image-container";
+    if(final){imageContainer.classList.add("final");createGold();}
+    imageContainer.style.opacity=1;
+    imageContainer.classList.add("zoom");
+  },t);
+}
+function hideImage(t){
+  setTimeout(()=>{
+    imageContainer.style.opacity=0;
+    imageContainer.classList.remove("zoom");
+  },t);
+}
+function createGold(){
+  for(let i=0;i<40;i++){
+    let g=document.createElement("div");
+    g.className="gold";
+    g.style.left=Math.random()*100+"%";
+    g.style.bottom="0px";
+    g.style.animationDelay=Math.random()*5+"s";
+    document.body.appendChild(g);
+  }
+}
+
+/* SECUENCIA */
+
+let time=2000;
+
+const phrases=[
+"Todo era ruido…",
+"Todo era rápido…",
+"Y yo solo quería paz.",
+"Hasta que llegaste tú.",
+"Luis Alberto.",
+"No llegaste a impresionarme…",
+"Llegaste a tranquilizarme.",
+"Contigo no tengo que correr.",
+"Contigo simplemente soy.",
+"Admiro tu forma de ser."
+];
+
+phrases.forEach(p=>{
+  showText(p,time);
+  hideText(time+5000);
+  time+=7000;
+});
+
+/* FOTOS */
+
+const photos=[
+["nota.jpg","Aquí empezaba algo que aún no entendía…"],
+["pio.jpg","Aquí ya sentía calma."],
+["pio2.jpg","Aquí ya eras importante."],
+["pio3.jpg","Aquí ya me sentía segura."],
+["pio4.jpg","Aquí ya sabía que no eras pasajero."]
+];
+
+photos.forEach(p=>{
+  showImage(p[0],time);
+  showText(p[1],time+2000);
+  hideText(time+8000);
+  hideImage(time+10000);
+  time+=12000;
+});
+
+/* FOTO FINAL */
+showImage("nosotros.jpg",time,true);
+time+=6000;
+
+showText("Y aquí entendí algo…",time);
+hideText(time+6000);
+time+=8000;
+
+showText("No eres emoción.",time);
+hideText(time+6000);
+time+=8000;
+
+showText("Eres decisión.",time);
+hideText(time+6000);
+time+=8000;
+
+showText("Eres mi prioridad.",time);
+time+=10000;
+
+/* PROMESA */
+hideImage(time+2000);
+galaxy.style.background="radial-gradient(ellipse at bottom, #000 0%, #000 90%)";
+time+=5000;
+
+["No prometo perfección.",
+"Prometo intención.",
+"Prometo quedarme.",
+"Si el mundo se vuelve ruido…",
+"Yo voy a ser tu calma… como tú lo eres para mí."
+].forEach(p=>{
+  showText(p,time);
+  hideText(time+6000);
+  time+=8000;
+});
+
+/* CIERRE */
+smallText.innerHTML="Contigo… me quedo.";
+setTimeout(()=>{smallText.style.opacity=1;},time+2000);
+
+/* POLLITO */
+setTimeout(()=>{
+  chick.style.opacity=1;
+  chick.style.left="40%";
+},time+4000);
+
+setTimeout(()=>{
+  chick.classList.add("wave");
+},time+9000);
+
+setTimeout(()=>{
+  chick.style.left="110%";
+  chick.style.opacity=0;
+},time+14000);
+
+</script>
+</body>
+</html>
