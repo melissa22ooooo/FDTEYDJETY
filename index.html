@@ -10,26 +10,11 @@ body{
   margin:0;
   overflow:hidden;
   background:black;
-  font-family:'Georgia',serif;
+  font-family: 'Georgia', serif;
   color:white;
 }
 
-/* PANTALLA INICIO */
-#startScreen{
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:black;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  font-size:1.5em;
-  cursor:pointer;
-  z-index:10;
-}
-
-/* GALAXIA */
+/* ===== GALAXIA PROFUNDA ===== */
 .galaxy{
   position:fixed;
   width:100%;
@@ -38,13 +23,14 @@ body{
   overflow:hidden;
 }
 
+/* Estrellas */
 .star{
   position:absolute;
   width:2px;
   height:2px;
   background:white;
   border-radius:50%;
-  animation: twinkle 3s infinite alternate;
+  animation: twinkle 4s infinite alternate;
 }
 
 @keyframes twinkle{
@@ -52,38 +38,39 @@ body{
   to{opacity:1;}
 }
 
+/* Nebulosa */
 .nebula{
   position:absolute;
   width:900px;
   height:900px;
   background: radial-gradient(circle, rgba(138,43,226,0.25), transparent 70%);
   top:10%;
-  left:25%;
-  animation: rotate 60s linear infinite;
+  left:20%;
+  animation: rotateNebula 60s linear infinite;
 }
 
-@keyframes rotate{
+@keyframes rotateNebula{
   from{transform:rotate(0deg);}
   to{transform:rotate(360deg);}
 }
 
-/* TEXTO */
+/* ===== TEXTO ===== */
 .text{
   position:absolute;
   width:100%;
   top:40%;
   text-align:center;
-  font-size:1.9em;
+  font-size:2em;
   opacity:0;
   transition:opacity 2.5s ease;
-  padding:0 30px;
+  padding:0 20px;
 }
 
-/* IMÁGENES */
+/* ===== IMÁGENES ===== */
 .image-container{
   position:absolute;
   width:100%;
-  top:18%;
+  top:15%;
   text-align:center;
   opacity:0;
   transition:opacity 3s ease, transform 10s ease;
@@ -91,55 +78,40 @@ body{
 
 .image-container img{
   max-width:80%;
-  max-height:65vh;
-  border-radius:25px;
-  box-shadow:0 0 40px rgba(255,255,255,0.25);
+  max-height:70vh;
+  border-radius:20px;
+  box-shadow:0 0 40px rgba(255,255,255,0.3);
 }
 
-.zoom{
-  transform:scale(1.08);
-}
-
+/* Brillo dorado final */
 .final img{
   box-shadow:0 0 80px rgba(255,215,0,0.8);
 }
 
-/* PARTÍCULAS DORADAS */
+/* Partículas doradas */
 .gold{
   position:absolute;
   width:4px;
   height:4px;
   background:gold;
   border-radius:50%;
-  opacity:0.8;
-  animation: floatUp 6s linear infinite;
+  opacity:0.7;
+  animation: floatGold 6s infinite linear;
 }
 
-@keyframes floatUp{
-  from{transform:translateY(0); opacity:1;}
-  to{transform:translateY(-200px); opacity:0;}
+@keyframes floatGold{
+  from{transform:translateY(0);}
+  to{transform:translateY(-600px);}
 }
 
-/* POLLITO */
+/* ===== POLLITO ===== */
 .chick{
   position:absolute;
-  bottom:30px;
-  left:-120px;
-  font-size:42px;
+  bottom:20px;
+  left:-100px;
+  font-size:45px;
   opacity:0;
-  transition:left 8s linear, opacity 3s ease;
-}
-
-.wave{
-  animation: wave 1s ease 2;
-}
-
-@keyframes wave{
-  0%{transform:rotate(0deg);}
-  25%{transform:rotate(-15deg);}
-  50%{transform:rotate(15deg);}
-  75%{transform:rotate(-10deg);}
-  100%{transform:rotate(0deg);}
+  transition:all 8s linear;
 }
 
 .small-text{
@@ -147,25 +119,183 @@ body{
   bottom:12%;
   width:100%;
   text-align:center;
-  font-size:1.2em;
+  font-size:1.3em;
   opacity:0;
-  transition:opacity 4s ease;
+  transition:opacity 3s;
+}
+
+/* Ocultar iframe */
+iframe{
+  position:absolute;
+  width:0;
+  height:0;
+  border:0;
 }
 </style>
 </head>
 
 <body>
 
-<div id="startScreen" onclick="startExperience()">
-Toca la pantalla para comenzar ✨
+<div class="galaxy">
+  <div class="nebula"></div>
 </div>
 
-<!-- Música YouTube Invisible -->
-<div style="position:fixed; width:0; height:0; overflow:hidden;">
-  <iframe id="ytplayer"
-    src=""
-    frameborder="0"
-    allow="autoplay"
-    allowfullscreen>
-  </iframe>
-</div
+<div class="text" id="text"></div>
+
+<div class="image-container" id="imageContainer">
+  <img id="image" src="">
+</div>
+
+<div class="small-text" id="smallText"></div>
+<div class="chick" id="chick">🐥</div>
+
+<!-- Música Embed (YouTube Autoplay) -->
+<iframe 
+src="https://www.youtube.com/embed/x19bTYCDdRA?autoplay=1&loop=1&playlist=x19bTYCDdRA"
+allow="autoplay">
+</iframe>
+
+<script>
+
+/* ===== CREAR ESTRELLAS ===== */
+for(let i=0;i<200;i++){
+  let star=document.createElement("div");
+  star.className="star";
+  star.style.top=Math.random()*100+"%";
+  star.style.left=Math.random()*100+"%";
+  star.style.animationDuration=(Math.random()*3+2)+"s";
+  document.querySelector(".galaxy").appendChild(star);
+}
+
+/* ===== PARTÍCULAS DORADAS FINALES ===== */
+function createGold(){
+  for(let i=0;i<40;i++){
+    let g=document.createElement("div");
+    g.className="gold";
+    g.style.left=Math.random()*100+"%";
+    g.style.bottom="0px";
+    g.style.animationDuration=(Math.random()*4+4)+"s";
+    document.body.appendChild(g);
+  }
+}
+
+const text=document.getElementById("text");
+const imageContainer=document.getElementById("imageContainer");
+const image=document.getElementById("image");
+const smallText=document.getElementById("smallText");
+const chick=document.getElementById("chick");
+
+function showText(message, delay){
+  setTimeout(()=>{
+    text.innerHTML=message;
+    text.style.opacity=1;
+  },delay);
+}
+
+function hideText(delay){
+  setTimeout(()=>{text.style.opacity=0;},delay);
+}
+
+function showImage(src, delay, final=false){
+  setTimeout(()=>{
+    image.src=src;
+    imageContainer.className="image-container";
+    if(final){
+      imageContainer.classList.add("final");
+      createGold();
+    }
+    imageContainer.style.opacity=1;
+    imageContainer.style.transform="scale(1.07)";
+  },delay);
+}
+
+function hideImage(delay){
+  setTimeout(()=>{
+    imageContainer.style.opacity=0;
+    imageContainer.style.transform="scale(1)";
+  },delay);
+}
+
+/* ===== SECUENCIA ===== */
+
+let time=2000;
+
+showText("Todo era ruido…", time); hideText(time+5000); time+=7000;
+showText("Todo era rápido…", time); hideText(time+5000); time+=7000;
+showText("Y yo solo quería paz.", time); hideText(time+6000); time+=8000;
+showText("Hasta que llegaste tú.", time); hideText(time+6000); time+=8000;
+showText("Luis Alberto.", time); hideText(time+7000); time+=9000;
+
+showText("No llegaste a impresionarme…", time); hideText(time+6000); time+=8000;
+showText("Llegaste a tranquilizarme.", time); hideText(time+6000); time+=8000;
+showText("Contigo simplemente soy.", time); hideText(time+6000); time+=9000;
+showText("Admiro tu forma de ser.", time); hideText(time+7000); time+=9000;
+
+/* Fotos */
+const fotos=[
+"nota.jpg",
+"pio.jpg",
+"pio2.jpg",
+"pio3.jpg",
+"pio4.jpg"
+];
+
+fotos.forEach(f=>{
+  showImage(f,time);
+  time+=3000;
+  hideImage(time+7000);
+  time+=11000;
+});
+
+/* Foto final */
+showImage("nosotros.jpg", time, true);
+time+=5000;
+
+showText("Y aquí entendí algo…", time);
+hideText(time+6000);
+time+=8000;
+
+showText("No eres emoción.", time);
+hideText(time+6000);
+time+=8000;
+
+showText("Eres decisión.", time);
+hideText(time+7000);
+time+=9000;
+
+showText("Eres mi prioridad.", time);
+time+=9000;
+
+/* Promesa */
+hideImage(time+2000);
+time+=4000;
+
+showText("Prometo quedarme.", time);
+hideText(time+7000);
+time+=9000;
+
+showText("Yo voy a ser tu calma… como tú lo eres para mí.", time);
+hideText(time+9000);
+time+=11000;
+
+/* Final */
+smallText.innerHTML="Contigo… me quedo.";
+smallText.style.opacity=1;
+
+setTimeout(()=>{
+  chick.style.opacity=1;
+  chick.style.left="40%";
+}, time+2000);
+
+setTimeout(()=>{
+  chick.innerHTML="🐥✨";
+}, time+5000);
+
+setTimeout(()=>{
+  chick.style.left="110%";
+  chick.style.opacity=0;
+}, time+10000);
+
+</script>
+</body>
+</html>
